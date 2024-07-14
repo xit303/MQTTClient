@@ -37,7 +37,6 @@ where `lib/MQTTClient` is the destination folder.
 Initialize the submodule by typing
 
 ```
-git submodule init
-git submodule update
+git submodule update --init
 ```
 
