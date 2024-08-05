@@ -32,16 +32,16 @@ bool MQTTClient::Init()
         client.disconnect();
         isInitialized = false;
     }
-    if (mqttSettings.Server() && mqttSettings.Port() && mqttSettings.Username() && mqttSettings.Password())
+    if (mqttSettings.Server().Value() && mqttSettings.Port() && mqttSettings.Username().Value() && mqttSettings.Password().Value())
     {
-        Serial.printf("Setting MQTT server to %s with port %i\n", mqttSettings.Server().c_str(), mqttSettings.Port());
+        Serial.printf("Setting MQTT server to %s with port %i\n", mqttSettings.Server().Value().c_str(), mqttSettings.Port().Value());
 
-        client.setServer(mqttSettings.Server(), mqttSettings.Port());
+        client.setServer(mqttSettings.Server().Value(), mqttSettings.Port());
         client.setCallback(std::bind(&MQTTClient::MqttCallback, this, _1, _2, _3));
 
-        stateTopic = mqttSettings.Topic() + "/tele/stat";
-        debugTopic = mqttSettings.Topic() + "/debug";
-        debugSetTopic = mqttSettings.Topic() + "/debug/set";
+        stateTopic = mqttSettings.Topic().Value() + String("/tele/stat");
+        debugTopic = mqttSettings.Topic().Value() + String("/debug");
+        debugSetTopic = mqttSettings.Topic().Value() + String("/debug/set");
 
         isInitialized = true;
         return true;
@@ -62,11 +62,11 @@ void MQTTClient::Update()
         if (millis() >= nextConnect)
         {
             char mqtt_server[40];
-            strcpy(mqtt_server, mqttSettings.Server().c_str());
+            strcpy(mqtt_server, mqttSettings.Server().Value().c_str());
 
 
-            Serial.printf("MQTT Connecting to server with topic %s, username %s, password %s\n", mqttSettings.Topic().c_str(), mqttSettings.Username().c_str(), mqttSettings.Password().c_str());
-            if (client.connect(mqttSettings.Topic().c_str(), mqttSettings.Username().c_str(), mqttSettings.Password().c_str()))
+            Serial.printf("MQTT Connecting to server with topic %s, username %s, password %s\n", mqttSettings.Topic().Value().c_str(), mqttSettings.Username().Value().c_str(), mqttSettings.Password().Value().c_str());
+            if (client.connect(mqttSettings.Topic().Value().c_str(), mqttSettings.Username().Value().c_str(), mqttSettings.Password().Value().c_str()))
             {
                 Serial.println("MQTT connected");
                 AutoDiscovery();

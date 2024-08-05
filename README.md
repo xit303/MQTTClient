@@ -4,7 +4,7 @@ This is the basic implementation of my MQTT client for ESP8266 and ESP32.
 
 It uses a modified/simplified Version of [knolleary's PubSubClient](https://github.com/knolleary/pubsubclient) which is published under MIT license.
 
-The `MQTTSettings` class allows you to store the MQTT server, port, username, password, discovery prefix and topic in a `Preferences` class which is implemented in my `SettingsBase` class.
+The `MQTTSettings` class allows you to store the MQTT server, port, username, password, discovery prefix and topic in a `Preferences` class which is implemented in my `SettingsGroup` class.
 
 
 The `MQTTClient` class is an abstract class which must be inherited by the final implementation like so

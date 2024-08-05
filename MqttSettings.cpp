@@ -5,121 +5,89 @@
 #include "MqttSettings.h"
 
 //******************************************************
-// Public Methods
-//******************************************************
-
-bool MqttSettings::HasChanged()
-{
-    return enabled != loadedEnabled ||
-           server != loadedServer ||
-           port != loadedPort ||
-           username != loadedUsername ||
-           password != loadedPassword ||
-           discoPrefix != loadeddiscoPrefix ||
-           topic != loadedTopic;
-}
-
-//******************************************************
 // Protected Methods
 //******************************************************
 
 void MqttSettings::OnInit()
 {
-    defaultEnabled = false;
-    loadedEnabled = enabled = preferences.getBool("enabled", defaultEnabled);
-    loadedServer = server = preferences.getString("server");
-    loadedPort = port = preferences.getInt("port", 1883);
-    loadedUsername = username = preferences.getString("username");
-    loadedPassword = password = preferences.getString("password");
-    loadeddiscoPrefix = discoPrefix = preferences.getString("discoPrefix");
-    loadedTopic = topic = preferences.getString("topic");
+    bool b = preferences.getBool(enabled.Name(), enabled.DefaultValue());
+    enabled.LoadedValue(b);
+    settings.push_back(&enabled);
+
+    char s[512];
+    if (preferences.getString(server.Name(), s, 512))
+        server.LoadedValue(s);
+    settings.push_back(&server);
+
+    port.DefaultValue(1883);
+    int i = preferences.getInt(port.Name(), port.DefaultValue());
+    port.LoadedValue(i);
+    settings.push_back(&port);
+
+    if (preferences.getString(username.Name(), s, 512))
+        username.LoadedValue(s);
+    settings.push_back(&username);
+
+    if (preferences.getString(password.Name(), s, 512))
+        password.LoadedValue(s);
+    settings.push_back(&password);
+
+    if (preferences.getString(discoPrefix.Name(), s, 512))
+        discoPrefix.LoadedValue(s);
+    settings.push_back(&discoPrefix);
+
+    if (preferences.getString(topic.Name(), s, 512))
+        topic.LoadedValue(s);
+    settings.push_back(&topic);
 
     Print();
 }
 
 void MqttSettings::OnSetDefault()
 {
-    enabled = loadedEnabled = defaultEnabled;
-
-    server = String();
-    loadedServer = String();
-
-    port = loadedPort = 1883;
-
-    username = String();
-    loadedUsername = String();
-
-    password = String();
-    loadedPassword = String();
-
-    discoPrefix = String();
-    loadeddiscoPrefix = String();
-
-    topic = String();
-    loadedTopic = String();
-
-    preferences.remove("server");
-    preferences.remove("port");
-    preferences.remove("username");
-    preferences.remove("password");
-    preferences.remove("discoPrefix");
-    preferences.remove("clientId");
-    preferences.remove("topic");
-}
-
-void MqttSettings::OnReload()
-{
-    enabled = loadedEnabled;
-    server = loadedServer;
-    port = loadedPort;
-    username = loadedUsername;
-    password = loadedPassword;
-    discoPrefix = loadeddiscoPrefix;
-    topic = loadedTopic;
+    preferences.remove(server.Name());
+    preferences.remove(port.Name());
+    preferences.remove(username.Name());
+    preferences.remove(password.Name());
+    preferences.remove(discoPrefix.Name());
+    preferences.remove(topic.Name());
 }
 
 void MqttSettings::OnSave()
 {
-    if (enabled != loadedEnabled)
+    if (enabled.HasChanged())
     {
-        loadedEnabled = enabled;
-        preferences.putBool("enabled", enabled);
+        preferences.putBool(enabled.Name(), enabled);
     }
 
-    if (server != loadedServer)
+    if (server.HasChanged())
     {
-        loadedServer = server;
-        preferences.putString("server", server);
+        preferences.putString(server.Name(), server);
     }
 
-    if (port != loadedPort)
+    if (port.HasChanged())
     {
-        loadedPort = port;
-        preferences.putInt("port", port);
+        preferences.putInt(port.Name(), port);
     }
 
-    if (username != loadedUsername)
+    if (username.HasChanged())
     {
-        loadedUsername = username;
-        preferences.putString("username", username);
+        preferences.putString(username.Name(), username);
     }
 
-    if (password != loadedPassword)
+    if (password.HasChanged())
     {
-        loadedPassword = password;
-        preferences.putString("password", password);
+        preferences.putString(password.Name(), password);
     }
 
-    if (discoPrefix != loadeddiscoPrefix)
+    if (discoPrefix.HasChanged())
     {
-        loadeddiscoPrefix = discoPrefix;
-        preferences.putString("discoPrefix", discoPrefix);
+        preferences.putString(discoPrefix.Name(), discoPrefix);
     }
 
-    if (topic != loadedTopic)
+    if (topic.HasChanged())
     {
-        loadedTopic = topic;
-        preferences.putString("topic", topic);
+        preferences.putString(topic.Name(), topic);
     }
 
     Print();
