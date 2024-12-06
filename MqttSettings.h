@@ -5,6 +5,7 @@
 //******************************************************
 
 #include <SettingsGroup.h>
+#include <string>
 
 //******************************************************
 // Classes
@@ -14,14 +15,12 @@ class MqttSettings : public SettingsGroup
 {
 private:
     Setting<bool> enabled = Setting<bool>("enabled");
-    Setting<String> server = Setting<String>("server");
+    Setting<std::string> server = Setting<std::string>("server");
     Setting<int> port = Setting<int>("port");
-    //Setting<int> port2 = Setting<int>("");
-    //Setting<int> fixedAngle = Setting<int>("fixedAngle");
-    Setting<String> username = Setting<String>("username");
-    Setting<String> password = Setting<String>("password");
-    Setting<String> discoPrefix = Setting<String>("discoPrefix");
-    Setting<String> topic = Setting<String>("topic");
+    Setting<std::string> username = Setting<std::string>("username");
+    Setting<std::string> password = Setting<std::string>("password");
+    Setting<std::string> discoPrefix = Setting<std::string>("discoPrefix");
+    Setting<std::string> topic = Setting<std::string>("topic");
 
 protected:
     virtual void OnInit() override;
@@ -33,11 +32,24 @@ protected:
 public:
     MqttSettings() : SettingsGroup("Mqtt") {}
 
-    Setting<bool>& Enabled() { return enabled; }
-    Setting<String>& Server() { return server; }
-    Setting<int>& Port() { return port; }
-    Setting<String>& Username() { return username; }
-    Setting<String>& Password() { return password; }
-    Setting<String>& DiscoPrefix() { return discoPrefix; }
-    Setting<String>& Topic() { return topic; }
+    __always_inline bool GetEnabled() const { return enabled.Value(); }
+    __always_inline void SetEnabled(bool value) { enabled.Value(value); }
+
+    __always_inline const std::string &GetServer() { return server; }
+    __always_inline void SetServer(const std::string &value) { server.Value(value); }
+
+    __always_inline int GetPort() const { return port.Value(); }
+    __always_inline void Setport(int value) { port.Value(value); }
+
+    __always_inline const std::string &GetUsername() const { return username.Value(); }
+    __always_inline void SetUsername(const std::string &value) { username.Value(value); }
+
+    __always_inline const std::string &GetPassword() const { return password.Value(); }
+    __always_inline void SetPassword(const std::string &value) { password.Value(value); }
+
+    __always_inline const std::string &GetDiscoPrefix() const { return discoPrefix.Value(); }
+    __always_inline void SetDiscoPrefix(const std::string &value) { discoPrefix.Value(value); }
+
+    __always_inline const std::string &GetTopic() const { return topic.Value(); }
+    __always_inline void SetTopic(const std::string &value) { topic.Value(value); }
 };

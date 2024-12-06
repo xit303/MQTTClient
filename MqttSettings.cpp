@@ -57,12 +57,12 @@ void MqttSettings::OnSave()
 {
     if (enabled.HasChanged())
     {
-        preferences.putBool(enabled.Name(), enabled);
+        preferences.putBool(enabled.Name(), enabled.Value());
     }
 
     if (server.HasChanged())
     {
-        preferences.putString(server.Name(), server);
+        preferences.putString(server.Name(), server.Value().c_str());
     }
 
     if (port.HasChanged())
@@ -72,22 +72,22 @@ void MqttSettings::OnSave()
 
     if (username.HasChanged())
     {
-        preferences.putString(username.Name(), username);
+        preferences.putString(username.Name(), username.Value().c_str());
     }
 
     if (password.HasChanged())
     {
-        preferences.putString(password.Name(), password);
+        preferences.putString(password.Name(), password.Value().c_str());
     }
 
     if (discoPrefix.HasChanged())
     {
-        preferences.putString(discoPrefix.Name(), discoPrefix);
+        preferences.putString(discoPrefix.Name(), discoPrefix.Value().c_str());
     }
 
     if (topic.HasChanged())
     {
-        preferences.putString(topic.Name(), topic);
+        preferences.putString(topic.Name(), topic.Value().c_str());
     }
 
     Print();
@@ -96,25 +96,25 @@ void MqttSettings::OnSave()
 void MqttSettings::Print()
 {
     Serial.print("Enabled: ");
-    Serial.println(enabled);
+    Serial.println(enabled.Value());
 
     Serial.print("Server: ");
-    Serial.println(server);
+    Serial.println(server.Value().c_str());
 
     Serial.print("Port: ");
-    Serial.println(port);
+    Serial.println(port.Value());
 
     Serial.print("Username: ");
-    Serial.println(username);
+    Serial.println(username.Value().c_str());
 
     Serial.print("Password: ");
-    Serial.println(password);
+    Serial.println(password.Value().c_str());
 
     Serial.print("DiscoPrefix: ");
-    Serial.println(discoPrefix);
+    Serial.println(discoPrefix.Value().c_str());
 
     Serial.print("Topic: ");
-    Serial.println(topic);
+    Serial.println(topic.Value().c_str());
 }
 
 //******************************************************
