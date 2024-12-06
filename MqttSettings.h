@@ -39,7 +39,7 @@ public:
     __always_inline void SetServer(const std::string &value) { server.Value(value); }
 
     __always_inline int GetPort() const { return port.Value(); }
-    __always_inline void Setport(int value) { port.Value(value); }
+    __always_inline void SetPort(int value) { port.Value(value); }
 
     __always_inline const std::string &GetUsername() const { return username.Value(); }
     __always_inline void SetUsername(const std::string &value) { username.Value(value); }
