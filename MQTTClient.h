@@ -20,9 +20,9 @@ protected:
     bool debugMode = true;
     bool isInitialized = false;
 
-    String stateTopic;
-    String debugTopic;
-    String debugSetTopic;
+    std::string stateTopic;
+    std::string debugTopic;
+    std::string debugSetTopic;
 
     MqttSettings mqttSettings;
     WiFiClient wifiClient;
@@ -35,7 +35,7 @@ public:
     virtual bool Init() override;
     virtual void Update() override;
 
-    bool Initialized() { return isInitialized; }
-    bool Enabled() { return mqttSettings.Enabled(); }
+    bool GetInitialized() { return isInitialized; }
+    bool GetEnabled() { return mqttSettings.GetEnabled(); }
     MqttSettings& GetSettings() { return mqttSettings; }
 };
