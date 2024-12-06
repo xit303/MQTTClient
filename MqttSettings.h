@@ -35,7 +35,7 @@ public:
     __always_inline bool GetEnabled() const { return enabled.Value(); }
     __always_inline void SetEnabled(bool value) { enabled.Value(value); }
 
-    __always_inline const std::string &GetServer() { return server; }
+    __always_inline const std::string &GetServer() { return server.Value(); }
     __always_inline void SetServer(const std::string &value) { server.Value(value); }
 
     __always_inline int GetPort() const { return port.Value(); }
