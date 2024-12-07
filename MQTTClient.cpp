@@ -2,11 +2,8 @@
 // Includes
 //******************************************************
 
-//#include <ArduinoJson.h>
-
 #include "MQTTClient.h"
-#include "../../src/config.h"
-#include "System.h"
+//#include "../../src/config.h"
 
 //******************************************************
 // Usings
@@ -21,6 +18,12 @@ using namespace std::placeholders;
 //******************************************************
 // Public Methods
 //******************************************************
+
+MQTTClient::MQTTClient(MqttSettings &mqttSettings)
+    : mqttSettings(mqttSettings)
+{
+
+}
 
 bool MQTTClient::Init()
 {
@@ -55,7 +58,7 @@ bool MQTTClient::Init()
     client.setServer(mqttSettings.GetServer().c_str(), mqttSettings.GetPort());
     client.setCallback(std::bind(&MQTTClient::MqttCallback, this, _1, _2, _3));
 
-    stateTopic = mqttSettings.GetTopic() + "/tele/stat";
+    //stateTopic = mqttSettings.GetTopic() + "/tele/stat";
     debugTopic = mqttSettings.GetTopic() + "/debug";
     debugSetTopic = mqttSettings.GetTopic() + "/debug/set";
 
@@ -95,9 +98,35 @@ void MQTTClient::Update()
         client.loop();
 }
 
+void MQTTClient::SetTopicCallback(const std::string &topic, MqttTopicCallbackFunction func)
+{
+    topicCallbacks[topic] = func;
+}
+
 //******************************************************
 // Protected Methods
 //******************************************************
+
+void MQTTClient::MqttCallback(char *topic, byte *payload, unsigned int length)
+{
+    for (const auto &callback : topicCallbacks)
+    {
+        if (callback.first == topic)
+        {
+            callback.second(payload, length);
+            return;
+        }
+    }
+
+    std::string msg = "Unknown topic [" + std::string(topic) + "] received";
+    client.publish(debugTopic.c_str(), msg.c_str());
+}
+
+void MQTTClient::AutoDiscovery()
+{
+    for (const auto &callback : topicCallbacks)
+        client.subscribe(callback.first.c_str());
+}
 
 //******************************************************
 // Private Methods
