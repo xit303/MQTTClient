@@ -27,9 +27,6 @@ MQTTClient::MQTTClient(MqttSettings &mqttSettings)
 
 bool MQTTClient::Init()
 {
-    // if (!mqttSettings.Init())
-    //     return false;
-
     if (mqttSettings.GetServer().empty())
     {
         return false;
@@ -58,9 +55,8 @@ bool MQTTClient::Init()
     client.setServer(mqttSettings.GetServer().c_str(), mqttSettings.GetPort());
     client.setCallback(std::bind(&MQTTClient::MqttCallback, this, _1, _2, _3));
 
-    //stateTopic = mqttSettings.GetTopic() + "/tele/stat";
-    debugTopic = mqttSettings.GetTopic() + "/debug";
-    debugSetTopic = mqttSettings.GetTopic() + "/debug/set";
+    debugTopic = mqttSettings.GetTopicPrefix() + "/debug";
+    debugSetTopic = mqttSettings.GetTopicPrefix() + "/debug/set";
 
     isInitialized = true;
     return true;
@@ -73,7 +69,6 @@ void MQTTClient::Update()
     if (!isInitialized || !mqttSettings.GetEnabled())
         return;
 
-    /* MQTT */
     if (!client.connected())
     {
         if (millis() >= nextConnect)
@@ -81,8 +76,8 @@ void MQTTClient::Update()
             char mqtt_server[40];
             strcpy(mqtt_server, mqttSettings.GetServer().c_str());
 
-            Serial.printf("MQTT Connecting to server [%s:%i] with topic [%s], username [%s], password [%s]\n", mqttSettings.GetServer().c_str(), mqttSettings.GetPort(), mqttSettings.GetTopic().c_str(), mqttSettings.GetUsername().c_str(), mqttSettings.GetPassword().c_str());
-            if (client.connect(mqttSettings.GetTopic().c_str(), mqttSettings.GetUsername().c_str(), mqttSettings.GetPassword().c_str()))
+            Serial.printf("MQTT Connecting to server [%s:%i] with topic prefix [%s], username [%s], password [%s]\n", mqttSettings.GetServer().c_str(), mqttSettings.GetPort(), mqttSettings.GetTopicPrefix().c_str(), mqttSettings.GetUsername().c_str(), mqttSettings.GetPassword().c_str());
+            if (client.connect(mqttSettings.GetTopicPrefix().c_str(), mqttSettings.GetUsername().c_str(), mqttSettings.GetPassword().c_str()))
             {
                 Serial.println("MQTT connected");
                 AutoDiscovery();

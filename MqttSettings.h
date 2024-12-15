@@ -19,8 +19,8 @@ private:
     Setting<int> port = Setting<int>("port");
     Setting<std::string> username = Setting<std::string>("username");
     Setting<std::string> password = Setting<std::string>("password");
-    Setting<std::string> discoPrefix = Setting<std::string>("discoPrefix");
-    Setting<std::string> topic = Setting<std::string>("topic");
+    Setting<std::string> discoTopic = Setting<std::string>("discoTopic");
+    Setting<std::string> topicPrefix = Setting<std::string>("topic");
 
 protected:
     virtual void OnInit() override;
@@ -47,9 +47,9 @@ public:
     __always_inline const std::string &GetPassword() const { return password.Value(); }
     __always_inline void SetPassword(const std::string &value) { password.Value(value); }
 
-    __always_inline const std::string &GetDiscoPrefix() const { return discoPrefix.Value(); }
-    __always_inline void SetDiscoPrefix(const std::string &value) { discoPrefix.Value(value); }
+    __always_inline const std::string &GetDiscoTopic() const { return discoTopic.Value(); }
+    __always_inline void SetDiscoTopic(const std::string &value) { discoTopic.Value(value); }
 
-    __always_inline const std::string &GetTopic() const { return topic.Value(); }
-    __always_inline void SetTopic(const std::string &value) { topic.Value(value); }
+    __always_inline const std::string &GetTopicPrefix() const { return topicPrefix.Value(); }
+    __always_inline void SetTopicPrefix(const std::string &value) { topicPrefix.Value(value); }
 };

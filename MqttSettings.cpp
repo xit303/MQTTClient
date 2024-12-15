@@ -32,13 +32,13 @@ void MqttSettings::OnInit()
         password.LoadedValue(s);
     settings.push_back(&password);
 
-    if (preferences.getString(discoPrefix.Name(), s, 512))
-        discoPrefix.LoadedValue(s);
-    settings.push_back(&discoPrefix);
+    if (preferences.getString(discoTopic.Name(), s, 512))
+        discoTopic.LoadedValue(s);
+    settings.push_back(&discoTopic);
 
-    if (preferences.getString(topic.Name(), s, 512))
-        topic.LoadedValue(s);
-    settings.push_back(&topic);
+    if (preferences.getString(topicPrefix.Name(), s, 512))
+        topicPrefix.LoadedValue(s);
+    settings.push_back(&topicPrefix);
 
     Print();
 }
@@ -49,8 +49,8 @@ void MqttSettings::OnSetDefault()
     preferences.remove(port.Name());
     preferences.remove(username.Name());
     preferences.remove(password.Name());
-    preferences.remove(discoPrefix.Name());
-    preferences.remove(topic.Name());
+    preferences.remove(discoTopic.Name());
+    preferences.remove(topicPrefix.Name());
 }
 
 void MqttSettings::OnSave()
@@ -80,14 +80,14 @@ void MqttSettings::OnSave()
         preferences.putString(password.Name(), password.Value().c_str());
     }
 
-    if (discoPrefix.HasChanged())
+    if (discoTopic.HasChanged())
     {
-        preferences.putString(discoPrefix.Name(), discoPrefix.Value().c_str());
+        preferences.putString(discoTopic.Name(), discoTopic.Value().c_str());
     }
 
-    if (topic.HasChanged())
+    if (topicPrefix.HasChanged())
     {
-        preferences.putString(topic.Name(), topic.Value().c_str());
+        preferences.putString(topicPrefix.Name(), topicPrefix.Value().c_str());
     }
 
     Print();
@@ -110,11 +110,11 @@ void MqttSettings::Print()
     Serial.print("Password: ");
     Serial.println(password.Value().c_str());
 
-    Serial.print("DiscoPrefix: ");
-    Serial.println(discoPrefix.Value().c_str());
+    Serial.print("Disco topic: ");
+    Serial.println(discoTopic.Value().c_str());
 
-    Serial.print("Topic: ");
-    Serial.println(topic.Value().c_str());
+    Serial.print("TopicPrefix: ");
+    Serial.println(topicPrefix.Value().c_str());
 }
 
 //******************************************************
